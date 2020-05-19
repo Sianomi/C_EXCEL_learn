@@ -37,8 +37,11 @@ void CSV_Input(Student* list)
 		else
 			strcpy(list[i].unversity, ptr);
 		ptr = strtok(NULL, ",");
-		strcpy(list[i].major, ptr);
-	
+		if (ptr[0] == '"')
+			except(ptr, list[i].major);
+		else
+			strcpy(list[i].major, ptr);
+
 		i++;
 	}
 	fclose(fp);
