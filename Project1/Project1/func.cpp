@@ -32,10 +32,13 @@ void CSV_Input(Student* list)
 		ptr = strtok(NULL, ",");
 		strcpy(list[i].email, ptr);
 		ptr = strtok(NULL, ",");
-		strcpy(list[i].unversity, ptr);
+		if (ptr[0] == '"')
+			except(ptr, list[i].unversity);
+		else
+			strcpy(list[i].unversity, ptr);
 		ptr = strtok(NULL, ",");
 		strcpy(list[i].major, ptr);
-
+	
 		i++;
 	}
 	fclose(fp);
@@ -98,9 +101,9 @@ void search_leader(Student* list)
 			fprintf(fp, "  조원  ");
 		}
 
-		printf("%-20s%-10s%-30s%-25s%-80s\n",
+		printf(OUTPUT_FORM,
 			list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
-		fprintf(fp,"%-20s%-10s%-30s%-25s%-80s\n",
+		fprintf(fp,OUTPUT_FORM,
 			list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
 	}
 	fclose(fp);
@@ -156,9 +159,9 @@ void search_company(Student* list)
 			printf("  조원  ");
 			fprintf(fp,"  조원  ");
 		}
-		printf("%-20s%-10s%-30s%-25s%-80s\n",
+		printf(OUTPUT_FORM,
 			list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
-		fprintf(fp, "%-20s%-10s%-30s%-25s%-80s\n",
+		fprintf(fp, OUTPUT_FORM,
 			list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
 	}
 
@@ -210,9 +213,9 @@ void search_name(Student* list)
 		printf("  조원  ");
 		fprintf(fp,"  조원  ");
 	}
-	printf("%-20s%-10s%-30s%-25s%-80s\n",
+	printf(OUTPUT_FORM,
 		list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
-	fprintf(fp,"%-20s%-10s%-30s%-25s%-80s\n",
+	fprintf(fp,OUTPUT_FORM,
 		list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
 
 	fclose(fp);
@@ -257,9 +260,9 @@ void search_university(Student* list)
 				printf("  조원  ");
 				fprintf(fp,"  조원  ");
 			}
-			printf("%-20s%-10s%-30s%-25s%-80s\n",
+			printf(OUTPUT_FORM,
 				list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
-			fprintf(fp,"%-20s%-10s%-30s%-25s%-80s\n",
+			fprintf(fp,OUTPUT_FORM,
 				list[i].company_name, list[i].name, list[i].email, list[i].unversity, list[i].major);
 		}
 	}
@@ -268,4 +271,19 @@ void search_university(Student* list)
 
 	if (flag == false)
 		printf("해당 대학명이 존재하지 않습니다.\n");
+}
+
+void except(char* start, char* destination)
+{
+	while (true)
+	{
+		strcat(destination, start);
+		destination[strlen(destination)] = ',';
+		start = strtok(NULL, ",");
+		if (start[strlen(start) - 1] == '"')
+		{
+			strcat(destination, start);
+			break;
+		}
+	}
 }

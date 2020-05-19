@@ -9,6 +9,7 @@
 #define UNIVERSITY_MAX 50
 #define MAJOR_MAX 80
 #define MASTER_PATH "C:\\result\\result.txt"
+#define OUTPUT_FORM "%-20s%-10s%-30s%-40s%-80s\n"
 
 #include <stdio.h>
 #include <string.h>
@@ -25,6 +26,7 @@ typedef struct student {
 } Student;
 
 void CSV_Input(Student* list);
+void except(char* start, char* destination);
 void search_leader(Student* list);
 void search_company(Student* list);
 void search_name(Student* list);
