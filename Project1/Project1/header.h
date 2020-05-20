@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef struct student {
+typedef struct student {  // 학생들의 정보를 저장하기 위한 구조체.
 	bool leader_flag{ false };
 	char company_name[COMPANY_NAME_MAX]{ 0, };
 	char name[NAME_MAX]{ 0, };
@@ -25,11 +25,12 @@ typedef struct student {
 	char major[MAJOR_MAX]{ 0, };
 } Student;
 
-void CSV_Input(Student* list);
-void except(char* start, char* destination);
-void search_leader(Student* list);
-void search_company(Student* list);
-void search_name(Student* list);
-void search_university(Student* list);
+// 함수들은 기본적으로 학생들의 정보를 처리하는 함수이기 때문에 구조체 배열을 매개변수로 이용함. 리턴은 없음.
+void CSV_Input(Student* list);               // CSV파일을 파싱하기 위한 함수.
+void except(char* start, char* destination); // 파싱과정에서 문자열에 ,(콤마)가 포함된 경우에 대한 예외처리. c++구문이지만 try catch로 개선가능.
+void search_leader(Student* list);           // 이름을 입력받아 팀장인지 아닌지 판단하고 팀장이라면 팀에 관련된 모든 정보를 출력. 아니라면 팀장이 아니라고 알려주고 종료함.
+void search_company(Student* list);          // 회사명을 입력받아 존재하는지 아닌지 확인하고 존재한다면 해당 팀에 관련된 모든 정보를 출력. 아니라면 회사가 존재하지 않는다고 알려주고 종료함.
+void search_name(Student* list);             // 이름을 입력받아 해당 학생이 존재하는지 조회하고 존재한다면 출력. 아니라면 해당 학생이 존재하지 않는다고 알려주고 종료함.
+void search_university(Student* list);       // 대학명을 입력받아 해당 대학이 존재하는지 확인하고 존재한다면 동일한 대학을 다닌 모든 학생을 출력. 존재하지 않는다면 해당 대학이 존재하지 않는다고 알려주고 종료함.
 
 #endif
