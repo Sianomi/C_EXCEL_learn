@@ -4,7 +4,7 @@ int main()
 {
 	Student list[LIST_MAX];
 
-	CSV_Input(list);
+	read_file(list);
 	
 	while (true)
 	{

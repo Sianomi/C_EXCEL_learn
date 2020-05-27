@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="func.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="read_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />

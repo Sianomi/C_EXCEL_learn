@@ -1,52 +1,5 @@
 #include "header.h"
 
-
-void CSV_Input(Student* list)
-{
-	FILE* fp;
-	int i{ 0 };
-	char buffer[50000]{ 0, };
-	char* ptr = NULL;
-
-	fp = fopen("C:\\result\\서울반 교육생 명단_한국표준협회.csv", "r");
-	if (fp == NULL)
-	{
-		printf("파일 오픈 실패\n");
-		exit(1);
-	}
-	fgets(buffer, sizeof(buffer), fp);
-
-	while (fgets(buffer, sizeof(buffer), fp) != NULL)
-	{
-		ptr = strtok(buffer, ",");
-		if (strcmp("조장", ptr) == 0)
-		{
-			list[i].leader_flag = 1;
-			ptr = strtok(NULL, ",");
-			strcpy(list[i].company_name, ptr);
-		}
-		else
-			strcpy(list[i].company_name, ptr);
-		ptr = strtok(NULL, ",");
-		strcpy(list[i].name, ptr);
-		ptr = strtok(NULL, ",");
-		strcpy(list[i].email, ptr);
-		ptr = strtok(NULL, ",");
-		if (ptr[0] == '"')
-			except(ptr, list[i].unversity);
-		else
-			strcpy(list[i].unversity, ptr);
-		ptr = strtok(NULL, ",");
-		if (ptr[0] == '"')
-			except(ptr, list[i].major);
-		else
-			strcpy(list[i].major, ptr);
-
-		i++;
-	}
-	fclose(fp);
-}
-
 void search_leader(Student* list)
 {
 	int i;
@@ -69,7 +22,7 @@ void search_leader(Student* list)
 	{
 		if (strcmp(list[i].name, search_name) == 0)
 		{
-			if (list[i].leader_flag == 1)
+			if (strcmp(list[i].leader,"조장")==0)
 			{
 				strcpy(searched_company_name, list[i].company_name);
 				break;
@@ -93,7 +46,7 @@ void search_leader(Student* list)
 		timestr[strlen(timestr) - 1] = '\0';
 		fprintf(fp, timestr);
 
-		if (list[i].leader_flag == 1) 
+		if (strcmp(list[i].leader, "조장") == 0)
 		{ 
 			printf("  조장  ");
 			fprintf(fp, "  조장  ");
@@ -152,7 +105,7 @@ void search_company(Student* list)
 		timestr[strlen(timestr) - 1] = '\0';
 		fprintf(fp, timestr);
 
-		if (list[i].leader_flag == 1)
+		if (strcmp(list[i].leader, "조장") == 0)
 		{
 			printf("  조장  ");
 			fprintf(fp, "  조장  ");
@@ -206,7 +159,7 @@ void search_name(Student* list)
 	timestr[strlen(timestr) - 1] = '\0';
 	fprintf(fp, timestr);
 
-	if (list[i].leader_flag == 1)
+	if (strcmp(list[i].leader, "조장") == 0)
 	{
 		printf("  조장  ");
 		fprintf(fp,"  조장  ");
@@ -253,7 +206,7 @@ void search_university(Student* list)
 			timestr[strlen(timestr) - 1] = '\0';
 			fprintf(fp, timestr);
 
-			if (list[i].leader_flag == 1)
+			if (strcmp(list[i].leader, "조장") == 0)
 			{
 				printf("  조장  ");
 				fprintf(fp,"  조장  ");
@@ -274,19 +227,4 @@ void search_university(Student* list)
 
 	if (flag == false)
 		printf("해당 대학명이 존재하지 않습니다.\n");
-}
-
-void except(char* start, char* destination)
-{
-	while (true)
-	{
-		strcat(destination, start);
-		destination[strlen(destination)] = ',';
-		start = strtok(NULL, ",");
-		if (start[strlen(start) - 1] == '"')
-		{
-			strcat(destination, start);
-			break;
-		}
-	}
 }
