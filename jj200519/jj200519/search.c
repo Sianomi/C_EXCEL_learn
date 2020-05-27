@@ -5,7 +5,7 @@ void search(StudentData* list)
 	int searchnum;
 	int company;
 	char name[10] = { 0, };
-	char school[10] = { 0, };
+	char school[20] = { 0, };
 
 	while (1)
 	{
@@ -22,10 +22,8 @@ void search(StudentData* list)
 				{
 					printf("\n");
 					printf("%10s %15s %10s %25s %15s %20s %15s \n", list[i].leader, list[i].company, list[i].name, list[i].email, list[i].school, list[i].major);
-					//printf("\n");
 				}
 			}
-			
 		}
 		else if (searchnum == 2)
 		{
@@ -96,6 +94,7 @@ void search(StudentData* list)
 		{
 			break;
 		}
+
 	}
 
 }

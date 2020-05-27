@@ -14,7 +14,7 @@ typedef struct StudentData
 	char name[30];
 	char email[30];
 	char school[30];
-	char major[30];
+	char major[50];
 
 }StudentData;
 

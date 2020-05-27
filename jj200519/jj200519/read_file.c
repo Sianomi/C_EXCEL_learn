@@ -1,8 +1,11 @@
 #include "jin.h"
 
+void Eliminate(char* str, char ch);
+
 void read_file(StudentData *list)
 {
 	char* buffer1;
+	char buffer2[10] = { 0, };
 	int size;
 	int i = 0;
 	char* ptr;
@@ -14,33 +17,35 @@ void read_file(StudentData *list)
 		return 1;
 	}
 
-	fseek(fp, 0, SEEK_END); //파일 포인터를 파일의 끝으로 이동
-	size = ftell(fp);       //파일 포인터의 현재 위치를 얻음
+	fseek(fp, 0, SEEK_END);        //파일 포인터를 파일의 끝으로 이동
+	size = ftell(fp);              //파일 포인터의 현재 위치를 얻음
 
 	buffer1 = malloc(size + 1);    //파일크기+1 바이트(문자열 마지막의 NULL)만큼 동적 메모리 할당
 	memset(buffer1, 0, size + 1);  //파일크기+1 바이트만큼 메모리를 0으로 초기화
 
-	fseek(fp, 0, SEEK_SET);      //파일 포인터를 파일의 처음으로 이동 rewind(fp)
-	fread(buffer1, size, 1, fp);  //파일 크기만큼 값을 읽음
-
-	//printf("%s\n", buffer1); //내용, 파일크기, 읽은 횟수
+	fseek(fp, 0, SEEK_SET);        //파일 포인터를 파일의 처음으로 이동 rewind(fp)
+	fread(buffer1, size, 1, fp);   //파일 크기만큼 값을 읽음
 	
+	Eliminate(buffer1, '?' );      //특수문자 제거
+	Eliminate(buffer1, '/');       //특수문자 제거
+	//printf("%s\n", buffer1);     //내용
+
 	while (1)  //내용 분할
 	{
 		if (i == 0)
 		{
-			ptr = strtok(buffer1, ",");
+			ptr = strtok(buffer1, "\n,");
 		}
 		else
 		{
-			ptr = strtok(NULL, ",");
+			ptr = strtok(NULL, "\n,");
 			if (ptr == NULL) break;
 		}
 
 		if (i == 0 || strcmp("조장", ptr) == 0)
 		{
 			strcpy(list[i].leader, ptr);
-			ptr = strtok(NULL, ",");
+			ptr = strtok(NULL, "\n,");
 			strcpy(list[i].company, ptr);
 		}
 		else
@@ -49,13 +54,24 @@ void read_file(StudentData *list)
 			strcpy(list[i].company, ptr);
 		}
 
-		ptr = strtok(NULL, ",");
+		ptr = strtok(NULL, "\n,");
 		strcpy(list[i].name, ptr);
-		ptr = strtok(NULL, ",");
+		ptr = strtok(NULL, "\n,");
 		strcpy(list[i].email, ptr);
-		ptr = strtok(NULL, ",");
-		strcpy(list[i].school, ptr);
-		ptr = strtok(NULL, "\n");
+		ptr = strtok(NULL, "\n,");
+
+		
+		if (ptr[0] == '"')
+		{
+			ptr = strcat(ptr,strtok(NULL, ","));
+			strcpy(list[i].school, ptr);
+		}
+		else
+		{
+			strcpy(list[i].school, ptr);
+		}
+		
+		ptr = strtok(NULL, "\n,");
 		strcpy(list[i].major, ptr);
 
 		i++;
@@ -65,4 +81,16 @@ void read_file(StudentData *list)
 
 	free(buffer1);  //동적 메모리 해제
 
+}
+
+void Eliminate(char* str, char ch)
+{
+	for (; *str != 0; str++)
+	{
+		if (*str == ch)
+		{
+			strcpy(str, str + 1);
+			str--;
+		}
+	}
 }
