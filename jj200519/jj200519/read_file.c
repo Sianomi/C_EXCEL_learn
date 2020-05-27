@@ -27,7 +27,7 @@ void read_file(StudentData *list)
 	fread(buffer1, size, 1, fp);   //파일 크기만큼 값을 읽음
 	
 	Eliminate(buffer1, '?' );      //특수문자 제거
-	Eliminate(buffer1, '/');       //특수문자 제거
+	
 	//printf("%s\n", buffer1);     //내용
 
 	while (1)  //내용 분할
